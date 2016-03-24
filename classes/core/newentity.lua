@@ -7,6 +7,7 @@ return function()
       return self.entities[name]
     end,
     addEntity = function(self, name, entity)
+      assert(self.entities[name] == nil, "An entity with this name is already registered." )
       self.entities[name] = entity
     end,
     removeEntity = function(self, name)
