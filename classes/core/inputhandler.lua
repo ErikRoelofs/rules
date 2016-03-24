@@ -15,9 +15,12 @@ return function()
       if self.triggers[key] == nil then
         self.triggers[key] = {}
       end
+      assert(self.triggers[key][name] == nil, "A trigger named " .. name .. " already exists for key " .. key )
       self.triggers[key][name] = trigger
     end,
     removeTriggerForKey = function(self, key, name)
+      assert(self.triggers[key], "No triggers are registered for key " .. key )
+      assert(self.triggers[key][name], "A trigger named " .. name .. " is not registered for key " .. key )
       self.triggers[key][name] = nil
     end,
     getTriggersForKey = function(self, key)
