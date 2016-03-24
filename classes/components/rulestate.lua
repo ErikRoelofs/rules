@@ -38,5 +38,8 @@ return {
   end,
   remove = function (entity)
     entity:removeComponent("ruleState")
+  end,
+  get = function (entity)
+    return entity:component("ruleState")
   end
 }
