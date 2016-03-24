@@ -18,9 +18,11 @@ return {
           end
         end,
         setInactive = function(self)
-          active = false
-          for name, effect in pairs(self.effects) do
-            effect:becomesInactive()
+          if active then
+            active = false
+            for name, effect in pairs(self.effects) do
+              effect:becomesInactive()
+            end
           end
         end,
         isActive = function(self)

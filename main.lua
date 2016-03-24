@@ -43,6 +43,7 @@ end
 function verify()
   require "tests/core/newentity"()
   require "tests/core/inputhandler"()
+  require "tests/components/rulestate"()
   
   require "tests/initial"()
   
