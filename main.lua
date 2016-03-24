@@ -1,20 +1,12 @@
 makeEntity = require "classes/core/newentity"
 
 ruleState = require "classes/components/rulestate"
-giveRuleState = ruleState.add
-removeRuleState = ruleState.remove
 
 keyTriggerCondition = require "classes/components/triggers/key"
-giveKeyTriggerCondition = keyTriggerCondition.add
-removeKeyTrigger = keyTriggerCondition.remove
 
 otherBlockTrigger = require "classes/components/triggers/otherblock"
-giveOtherBlockTrigger = otherBlockTrigger.add
-removeOtherBlockTrigger = otherBlockTrigger.remove
 
 printEffect = require "classes/components/effects/print"
-givePrintEffect = printEffect.add
-removePrintEffect = printEffect.remove
 
 inputHandler = require "classes/core/inputhandler"()
 outputHandler = require "classes/core/outputhandler"()
