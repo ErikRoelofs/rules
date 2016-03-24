@@ -41,6 +41,9 @@ function love.keypressed(key, unicode)
 end
 
 function verify()
-  require "tests/initial"()
   require "tests/core/newentity"()
+  require "tests/core/inputhandler"()
+  
+  require "tests/initial"()
+  
 end
