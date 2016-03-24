@@ -1,32 +1,32 @@
 return function()
-  local block = {
-    entity = function(self, name)
-      if self.entities[name] == nil then
-        error("Trying to recover an unregistered entity")
+  local entity = {
+    component = function(self, name)
+      if self.components[name] == nil then
+        error("Trying to recover an unregistered component")
       end
-      return self.entities[name]
+      return self.components[name]
     end,
-    addEntity = function(self, name, entity)
-      assert(self.entities[name] == nil, "An entity with this name is already registered." )
-      self.entities[name] = entity
+    addComponent = function(self, name, component)
+      assert(self.components[name] == nil, "An component with this name is already registered." )
+      self.components[name] = component
     end,
-    removeEntity = function(self, name)
-      assert( self.entities[name], "Cannot remove " .. name .. ", it is not registered" )
-      self:checkEntityCanBeRemoved(name)
-      self.entities[name]:remove()
-      self.entities[name] = nil
+    removeComponent = function(self, name)
+      assert( self.components[name], "Cannot remove " .. name .. ", it is not registered" )
+      self:checkComponentCanBeRemoved(name)
+      self.components[name]:remove()
+      self.components[name] = nil
     end,
-    checkEntityCanBeRemoved = function(self, name)
-      for entityName, entity in pairs(self.entities) do
-        if not entity:allowRemoveOtherEntity(name) then
-          error("Cannot remove " .. name .. ", it is not allowed by " .. entityName)
+    checkComponentCanBeRemoved = function(self, name)
+      for componentName, component in pairs(self.components) do
+        if not component:allowRemoveOtherComponent(name) then
+          error("Cannot remove " .. name .. ", it is not allowed by " .. componentName)
         end
       end
     end,
-    hasEntity = function(self, name)
-      return self.entities[name] ~= nil
+    hasComponent = function(self, name)
+      return self.components[name] ~= nil
     end,
-    entities = {},
+    components = {},
   }
-  return block
+  return entity
 end

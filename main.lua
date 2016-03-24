@@ -47,6 +47,5 @@ function verify()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
   
-  require "tests/initial"()
   
 end

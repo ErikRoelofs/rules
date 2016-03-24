@@ -9,23 +9,23 @@ end
 
 local function testItCanBeSetToActive(rulestate, entity)
   rulestate.add(entity)
-  entity:entity("ruleState"):setActive()
-  assert(entity:entity("ruleState"):isActive() == true, "It should be active")
+  entity:component("ruleState"):setActive()
+  assert(entity:component("ruleState"):isActive() == true, "It should be active")
 end
 
 local function testItCanBeSetToInactive(rulestate, entity)
   rulestate.add(entity)
-  entity:entity("ruleState"):setInactive()
-  assert(entity:entity("ruleState"):isActive() == false, "It should be inactive")  
+  entity:component("ruleState"):setInactive()
+  assert(entity:component("ruleState"):isActive() == false, "It should be inactive")  
 end
 
 local function testItWillTriggerAttachedEffectsWhenItBecomesActive(rulestate, entity)
   local done = false
   local done2 = false
   rulestate.add(entity)
-  entity:entity("ruleState"):addEffect("effect", {becomesActive = function() done = true end})
-  entity:entity("ruleState"):addEffect("effect2", {becomesActive = function() done2 = true end})
-  entity:entity("ruleState"):setActive()
+  entity:component("ruleState"):addEffect("effect", {becomesActive = function() done = true end})
+  entity:component("ruleState"):addEffect("effect2", {becomesActive = function() done2 = true end})
+  entity:component("ruleState"):setActive()
   assert(done == true, "It should be called")
   assert(done2 == true, "It should also be called")
 end
@@ -34,10 +34,10 @@ local function testItWillTriggerAttachedEffectsWhenItBecomesInactive(rulestate, 
   local done = false
   local done2 = false
   rulestate.add(entity)
-  entity:entity("ruleState"):setActive()
-  entity:entity("ruleState"):addEffect("effect", {becomesInactive = function() done = true end})
-  entity:entity("ruleState"):addEffect("effect2", {becomesInactive = function() done2 = true end})  
-  entity:entity("ruleState"):setInactive()
+  entity:component("ruleState"):setActive()
+  entity:component("ruleState"):addEffect("effect", {becomesInactive = function() done = true end})
+  entity:component("ruleState"):addEffect("effect2", {becomesInactive = function() done2 = true end})  
+  entity:component("ruleState"):setInactive()
   assert(done == true, "It should be called")
   assert(done2 == true, "It should also be called")  
 end
@@ -46,10 +46,10 @@ local function testItWillNotTriggerAttachedEffectsWhenItAlreadyWasActive(rulesta
   local done = false
   local done2 = false
   rulestate.add(entity)
-  entity:entity("ruleState"):setActive()
-  entity:entity("ruleState"):addEffect("effect", {becomesActive = function() done = true end})
-  entity:entity("ruleState"):addEffect("effect2", {becomesActive = function() done2 = true end})
-  entity:entity("ruleState"):setActive()
+  entity:component("ruleState"):setActive()
+  entity:component("ruleState"):addEffect("effect", {becomesActive = function() done = true end})
+  entity:component("ruleState"):addEffect("effect2", {becomesActive = function() done2 = true end})
+  entity:component("ruleState"):setActive()
   assert(done == false, "It should not be called")
   assert(done2 == false, "It should also not be called")
   
@@ -59,10 +59,10 @@ local function testItWillNotTriggerAttachedEffectsWhenItAlreadyWasInactive(rules
   local done = false
   local done2 = false
   rulestate.add(entity)
-  entity:entity("ruleState"):setInactive()
-  entity:entity("ruleState"):addEffect("effect", {becomesInactive = function() done = true end})
-  entity:entity("ruleState"):addEffect("effect2", {becomesInactive = function() done2 = true end})  
-  entity:entity("ruleState"):setInactive()
+  entity:component("ruleState"):setInactive()
+  entity:component("ruleState"):addEffect("effect", {becomesInactive = function() done = true end})
+  entity:component("ruleState"):addEffect("effect2", {becomesInactive = function() done2 = true end})  
+  entity:component("ruleState"):setInactive()
   assert(done == false, "It should not be called")
   assert(done2 == false, "It should also not be called")  
 end

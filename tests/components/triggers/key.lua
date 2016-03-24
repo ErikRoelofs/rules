@@ -1,8 +1,8 @@
-local function testItCanOnlyAttachToEntitiesWithRulestate(keytrigger, entity, rulestate, inputHandler)
+local function testItCanOnlyAttachToComponentsWithRulestate(keytrigger, entity, rulestate, inputHandler)
   assert( false == pcall( function() keytrigger.add(entity) end ), "Should not be possible to add a keytrigger to an entity without rulestate" )  
 end
 
-local function testItBlocksRemovingRulestateFromEntities(keytrigger, entity, rulestate, inputHandler)
+local function testItBlocksRemovingRulestateFromComponents(keytrigger, entity, rulestate, inputHandler)
   rulestate.add(entity)
   keytrigger.add(entity, "q", inputHandler)
   
@@ -16,21 +16,21 @@ local function testItAddsATriggerToInputHandler(keytrigger, entity, rulestate, i
   assert(inputHandler:getNumTriggersForKey("q") == 1, "Should have one trigger now")
 end
 
-local function testOnKeyDownItWillSetEntityToActive(keytrigger, entity, rulestate, inputHandler)
+local function testOnKeyDownItWillSetComponentToActive(keytrigger, entity, rulestate, inputHandler)
   rulestate.add(entity)
   keytrigger.add(entity, "q", inputHandler)  
-  assert(entity:entity("ruleState"):isActive() == false, "Entity should be inactive now")
+  assert(entity:component("ruleState"):isActive() == false, "Component should be inactive now")
   inputHandler:keyDown("q")
-  assert(entity:entity("ruleState"):isActive() == true, "Entity should be active now")
+  assert(entity:component("ruleState"):isActive() == true, "Component should be active now")
 end
 
-local function testOnKeyUpItWillSetEntityToInactive(keytrigger, entity, rulestate, inputHandler)
+local function testOnKeyUpItWillSetComponentToInactive(keytrigger, entity, rulestate, inputHandler)
   rulestate.add(entity)
   keytrigger.add(entity, "q", inputHandler)
-  entity:entity("ruleState"):setActive()
-  assert(entity:entity("ruleState"):isActive() == true, "Entity should be active now")
+  entity:component("ruleState"):setActive()
+  assert(entity:component("ruleState"):isActive() == true, "Component should be active now")
   inputHandler:keyUp("q")
-  assert(entity:entity("ruleState"):isActive() == false, "Entity should be inactive now")
+  assert(entity:component("ruleState"):isActive() == false, "Component should be inactive now")
   
 end
 
@@ -47,10 +47,10 @@ return function()
   local k = require "classes/components/triggers/key"
   local i = require "classes/core/inputhandler"
   
-  testItCanOnlyAttachToEntitiesWithRulestate(k, e(), r, i())
-  testItBlocksRemovingRulestateFromEntities(k, e(), r, i())
+  testItCanOnlyAttachToComponentsWithRulestate(k, e(), r, i())
+  testItBlocksRemovingRulestateFromComponents(k, e(), r, i())
   testItAddsATriggerToInputHandler(k, e(), r, i())
-  testOnKeyDownItWillSetEntityToActive(k, e(), r, i())
-  testOnKeyUpItWillSetEntityToInactive(k, e(), r, i())
+  testOnKeyDownItWillSetComponentToActive(k, e(), r, i())
+  testOnKeyUpItWillSetComponentToInactive(k, e(), r, i())
   testOnRemoveItWillUnregisterKeyTrigger(k, e(), r, i())
 end

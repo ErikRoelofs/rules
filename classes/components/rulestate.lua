@@ -1,7 +1,7 @@
 return {
   add = function (entity)
     local active = false
-    entity:addEntity( "ruleState", {
+    entity:addComponent( "ruleState", {
         effects = {},
         addEffect = function(self, name, effect)
           self.effects[name] = effect
@@ -31,12 +31,12 @@ return {
         remove = function(self)
           
         end,
-        allowRemoveOtherEntity = function(self, name)
+        allowRemoveOtherComponent = function(self, name)
           return true
         end
     })
   end,
   remove = function (entity)
-    entity:removeEntity("ruleState")
+    entity:removeComponent("ruleState")
   end
 }

@@ -25,8 +25,8 @@ local function testItSetsOtherBlockToActive(otherblock, toTrigger, thatTriggers,
   rulestate.add(thatTriggers)
   otherblock.add(toTrigger, thatTriggers)
   
-  thatTriggers:entity("ruleState"):setActive()
-  assert(toTrigger:entity("ruleState"):isActive() == true, "It should be active as well")
+  thatTriggers:component("ruleState"):setActive()
+  assert(toTrigger:component("ruleState"):isActive() == true, "It should be active as well")
   
 end
 
@@ -35,10 +35,10 @@ local function testItSetsOtherBlockToInactive(otherblock, toTrigger, thatTrigger
   rulestate.add(thatTriggers)
   otherblock.add(toTrigger, thatTriggers)
   
-  thatTriggers:entity("ruleState"):setActive()
-  assert(toTrigger:entity("ruleState"):isActive() == true, "It should be active as well")
-  thatTriggers:entity("ruleState"):setInactive()
-  assert(toTrigger:entity("ruleState"):isActive() == false, "It should be inactive as well")
+  thatTriggers:component("ruleState"):setActive()
+  assert(toTrigger:component("ruleState"):isActive() == true, "It should be active as well")
+  thatTriggers:component("ruleState"):setInactive()
+  assert(toTrigger:component("ruleState"):isActive() == false, "It should be inactive as well")
   
 end
 

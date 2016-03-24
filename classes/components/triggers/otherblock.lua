@@ -1,44 +1,44 @@
 
 return {  
   add = function (entityToTrigger, entityThatTriggers)
-    if not entityToTrigger:hasEntity("ruleState") then
+    if not entityToTrigger:hasComponent("ruleState") then
       error("Only entities with RuleState can be the ToTrigger")
     end
-    if not entityThatTriggers:hasEntity("ruleState") then
+    if not entityThatTriggers:hasComponent("ruleState") then
       error("Only entities with RuleState can be the Trigger")
     end
     local target = entityToTrigger
     local source = entityThatTriggers    
     local anon = "otherBlock-target-" .. math.random()
-    source:addEntity("otherBlockEffect", {
+    source:addComponent("otherBlockEffect", {
         targetName = anon,
         becomesActive = function()
-          target:entity("ruleState"):setActive()
+          target:component("ruleState"):setActive()
         end,
         becomesInactive = function()
-          target:entity("ruleState"):setInactive()
+          target:component("ruleState"):setInactive()
         end,
         remove = function()
-          source:entity("ruleState"):removeEffect("block")
+          source:component("ruleState"):removeEffect("block")
         end,
-        allowRemoveOtherEntity = function(self, name)
+        allowRemoveOtherComponent = function(self, name)
           return name ~= "ruleState"
         end
     })  
     
-    target:addEntity(anon, {    
+    target:addComponent(anon, {    
       remove = function() end,
-      allowRemoveOtherEntity = function(self, name)
+      allowRemoveOtherComponent = function(self, name)
         return name ~= "ruleState"
       end
     })
-    source:entity("ruleState"):addEffect("block", source:entity("otherBlockEffect"))
+    source:component("ruleState"):addEffect("block", source:component("otherBlockEffect"))
   end,
 
   remove = function (entityToTrigger, entityThatTriggers)
-    local targetEntityName = entityThatTriggers:entity("otherBlockEffect").targetName
-    entityToTrigger:removeEntity(targetEntityName)
-    entityThatTriggers:removeEntity("otherBlockEffect")  
+    local targetComponentName = entityThatTriggers:component("otherBlockEffect").targetName
+    entityToTrigger:removeComponent(targetComponentName)
+    entityThatTriggers:removeComponent("otherBlockEffect")  
     
   end
 }
