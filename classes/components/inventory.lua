@@ -2,8 +2,8 @@ local componentName = "inventory"
 return function(carryable)  
   return {  
     add = function (entity)
-      entity:addComponent(componentName, {
-          contents = {},
+      local contents = {}
+      entity:addComponent(componentName, {          
           remove = function()
             
           end,
@@ -12,22 +12,22 @@ return function(carryable)
           end,
           placeInside = function(self, targetEntity)
             assert(carryable.has(targetEntity) == true, "Only entities that are carryable can be put in an inventory.")
-            table.insert(self.contents, targetEntity)
+            table.insert(contents, targetEntity)
           end,
           countItems = function(self)
-            return #self.contents
+            return #contents
           end,
           getItems = function(self)
             local tmp = {}
-            for k, v in ipairs(self.contents) do
+            for k, v in ipairs(contents) do
               table.insert(tmp, v)
             end
             return tmp
           end,
           removeFrom = function(self, targetEntity)
-            for k, v in ipairs(self.contents) do
+            for k, v in ipairs(contents) do
               if v == targetEntity then
-                table.remove(self.contents, k)
+                table.remove(contents, k)
                 return
               end
             end

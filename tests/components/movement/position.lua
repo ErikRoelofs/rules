@@ -27,7 +27,7 @@ local function testPositionCanBeModified(position, entity)
 end
 
 return function()
-  local p = require "classes/components/position"()
+  local p = require "classes/components/movement/position"()
   local e = require "classes/core/newentity"
   
   testItExists(p, e())

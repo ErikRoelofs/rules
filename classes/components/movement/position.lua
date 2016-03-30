@@ -34,5 +34,9 @@ return function()
     has = function(entity)
       return entity:hasComponent(componentName)
     end,
+    isA = function (name, component)
+      return name == componentName
+    end,
+    
   }
 end
