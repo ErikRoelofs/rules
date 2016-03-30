@@ -1,3 +1,9 @@
+-- movement
+-- collision
+-- AI (movement, collision, etc)
+-- rendering
+-- inventory
+
 makeEntity = require "classes/core/newentity"
 
 ruleState = require "classes/components/rulestate"
@@ -34,6 +40,8 @@ function verify()
   require "tests/core/inputhandler"()
   require "tests/components/rulestate"()
   require "tests/components/position"()
+  require "tests/components/carryable"()
+  require "tests/components/inventory"()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
   

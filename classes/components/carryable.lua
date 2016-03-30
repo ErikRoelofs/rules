@@ -1,26 +1,13 @@
-local componentName = "position"
+local componentName = "carryable"
 return function()
   return {  
     add = function (entity)
-      local xPos = 0
-      local yPos = 0
       entity:addComponent(componentName, {
           remove = function()
             
           end,
           allowRemoveOtherComponent = function(self, name, component)
             return true
-          end,
-          setPosition = function(self, x, y)
-            xPos = x
-            yPos = y
-          end,
-          getPosition = function(self, x, y)
-            return xPos, yPos
-          end,
-          movePosition = function(self, x, y)
-            xPos = xPos + x
-            yPos = yPos + y
           end
       })
     end,

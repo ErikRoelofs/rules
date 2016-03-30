@@ -17,6 +17,15 @@ local function testPositionCanBeSet(position, entity)
   assert(posY == 60, "Y position should be 60")
 end
 
+local function testPositionCanBeModified(position, entity)
+  position.add(entity)
+  position.get(entity):setPosition(50, 60)
+  position.get(entity):movePosition(15, -15)
+  local posX, posY = position.get(entity):getPosition()
+  assert(posX == 65, "X position should be 65")
+  assert(posY == 45, "Y position should be 45")
+end
+
 return function()
   local p = require "classes/components/position"()
   local e = require "classes/core/newentity"
@@ -24,5 +33,6 @@ return function()
   testItExists(p, e())
   testItCanBeRemoved(p, e())
   testPositionCanBeSet(p, e())
+  testPositionCanBeModified(p, e())
   
 end
