@@ -6,10 +6,7 @@ keyTriggerCondition = require "classes/components/triggers/key"
 
 otherBlockTrigger = require "classes/components/triggers/otherblock"
 
-printEffect = require "classes/components/effects/print"
-
 inputHandler = require "classes/core/inputhandler"()
-outputHandler = require "classes/core/outputhandler"()
 
 function love.load()
   if arg[#arg] == "-debug" then debug = true else debug = false end
