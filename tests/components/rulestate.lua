@@ -2,6 +2,12 @@ local function testItCanBeAddedToAnEntity(rulestate, entity)
   rulestate.add(entity)  
 end
 
+local function testItCanBeCheckedOnAnEntity(rulestate, entity)
+  rulestate.add(entity)  
+  assert(rulestate.has(entity) == true, "It should have the component")
+end
+
+
 local function testItCanBeRemovedFromAnEntity(rulestate, entity)
   rulestate.add(entity)
   rulestate.remove(entity)
@@ -69,7 +75,7 @@ end
 
 
 return function()
-  local r = require "classes/components/rulestate"
+  local r = require "classes/components/rulestate"()
   local e = require "classes/core/newentity"
   
   testItCanBeAddedToAnEntity(r,e())

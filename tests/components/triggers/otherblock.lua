@@ -55,7 +55,7 @@ local function testItCleansUpProperly(otherblock, toTrigger, thatTriggers, rules
 end
 
 return function()
-  local r = require "classes/components/rulestate"
+  local r = require "classes/components/rulestate"()
   local e = require "classes/core/newentity"
   local o = require "classes/components/triggers/otherblock"
   

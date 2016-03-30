@@ -42,9 +42,9 @@ local function testOnRemoveItWillUnregisterKeyTrigger(keytrigger, entity, rulest
 end
 
 return function()
-  local r = require "classes/components/rulestate"
+  local r = require "classes/components/rulestate"()
   local e = require "classes/core/newentity"
-  local k = require "classes/components/triggers/key"
+  local k = require "classes/components/triggers/key"(r)
   local i = require "classes/core/inputhandler"
   
   testItCanOnlyAttachToComponentsWithRulestate(k, e(), r, i())
