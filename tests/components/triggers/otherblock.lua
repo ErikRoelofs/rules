@@ -57,7 +57,7 @@ end
 return function()
   local r = require "classes/components/rulestate"()
   local e = require "classes/core/newentity"
-  local o = require "classes/components/triggers/otherblock"
+  local o = require "classes/components/triggers/otherblock"(r)
   
   testItCanOnlyAttachToEntitiesWithRulestate(o, e(), e(), r)
   testItBlocksRemovingRulestateFromThatTriggers(o, e(), e(), r)

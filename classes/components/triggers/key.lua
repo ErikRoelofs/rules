@@ -21,8 +21,8 @@
         remove = function(self)
           inputHandler:removeTriggerForKey(key, name)
         end,
-        allowRemoveOtherComponent = function(self, name)
-          return name ~= "ruleState"
+        allowRemoveOtherComponent = function(self, name, component)
+          return not rulestate.isA(name, component)
         end
       })
       inputHandler:addTriggerForKey(key, name, entity:component("triggerKey"))

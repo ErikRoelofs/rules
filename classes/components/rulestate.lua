@@ -46,5 +46,8 @@ return function()
     has = function (entity)
       return entity:hasComponent("ruleState")
     end,
+    isA = function (name, component)
+      return name == "ruleState"
+    end,
   }
 end

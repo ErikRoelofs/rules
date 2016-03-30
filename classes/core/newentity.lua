@@ -17,8 +17,9 @@ return function()
       self.components[name] = nil
     end,
     checkComponentCanBeRemoved = function(self, name)
+      assert(self.components[name], "No such component: " .. name )
       for componentName, component in pairs(self.components) do
-        if not component:allowRemoveOtherComponent(name) then
+        if not component:allowRemoveOtherComponent(name, self.components[name]) then
           error("Cannot remove " .. name .. ", it is not allowed by " .. componentName)
         end
       end
