@@ -1,10 +1,10 @@
-return function(motion, position)
+return function(force, motion)
   return {
     update = function(self, entities, dt)
       for _, entity in ipairs(entities) do
-        if motion.has(entity) then
-          local x, y = motion.get(entity):getMotion()
-          position.get(entity):movePosition(x * dt, y * dt)
+        if force.has(entity) then
+          local x, y = force.get(entity):getSumForce()
+          motion.get(entity):addMotion(x, y)
         end
       end
     end

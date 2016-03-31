@@ -3,7 +3,7 @@ return function(position)
   return {  
     add = function (entity, motionName)
       assert(position.has(entity) == true, "Motion requires Position")
-      local motion = {}      
+      local motion = {x=0, y=0}      
       entity:addComponent(componentName, {
           remove = function()
             
