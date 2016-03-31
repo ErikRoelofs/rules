@@ -1,24 +1,24 @@
-local function testItRequiresPosition(force, entity, position)  
-  assert(pcall(function() force.add(entity, "someForce") end) == false, "It should require Position")
-  position.add(entity)
+local function testItRequiresMotion(force, entity, motion)  
+  assert(pcall(function() force.add(entity, "someForce") end) == false, "It should require Motion")
+  motion.add(entity)
   force.add(entity, "someForce")
 end
 
-local function testItCanBeRemoved(force, entity, position)
-  position.add(entity)
+local function testItCanBeRemoved(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
   force.remove(entity)    
   assert(force.has(entity) == false, "Should have been removed")
 end
 
-local function testItBlocksRemovingPosition(force, entity, position)
-  position.add(entity)
+local function testItBlocksRemovingMotion(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
-  assert(pcall(function() position.remove(entity) end) == false, "It should block removing Position")
+  assert(pcall(function() motion.remove(entity) end) == false, "It should block removing Motion")
 end
 
-local function testItCanBeAssignedForce(force, entity, position)
-  position.add(entity)
+local function testItCanBeAssignedForce(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
   force.get(entity):setForce("someForce", 5,10)
   local x, y = force.get(entity):getForce("someForce")
@@ -26,8 +26,8 @@ local function testItCanBeAssignedForce(force, entity, position)
   assert(y == 10, "Y should be 10")
 end
 
-local function testItCanBeAssignedMultipleForces(force, entity, position)
-  position.add(entity)
+local function testItCanBeAssignedMultipleForces(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
   force.add(entity, "someOtherForce")
   force.get(entity):setForce("someForce", 5,10)
@@ -40,8 +40,8 @@ local function testItCanBeAssignedMultipleForces(force, entity, position)
   assert(y == 6, "Y should be 6")
 end
 
-local function testYouCanGetSumOfForce(force, entity, position)
-  position.add(entity)
+local function testYouCanGetSumOfForce(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
   force.add(entity, "someOtherForce")
   force.get(entity):setForce("someForce", 5,10)
@@ -51,16 +51,16 @@ local function testYouCanGetSumOfForce(force, entity, position)
   assert(y == 16, "Y should be 16")
 end
 
-local function testYouCanRemoveAForceByName(force, entity, position)
-  position.add(entity)
+local function testYouCanRemoveAForceByName(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
   force.add(entity, "someOtherForce")
   force.get(entity):removeByName("someForce")
   assert(pcall(function() force.get(entity):getForce("someForce") end) == false, "Should no longer be able to get this")
 end
 
-local function testYouCanModifyAForceByName(force, entity, position)
-  position.add(entity)
+local function testYouCanModifyAForceByName(force, entity, motion)
+  motion.add(entity)
   force.add(entity, "someForce")
   force.add(entity, "someOtherForce")
   force.get(entity):setForce("someForce", 6, 9)
@@ -72,16 +72,23 @@ local function testYouCanModifyAForceByName(force, entity, position)
 end
 
 return function()
-  local p = require "classes/components/movement/position"()
-  local m = require "classes/components/movement/force"(p)
+  local p = require "classes/components/movement/position"()  
+  local m = require "classes/components/movement/motion"(p)  
+  local f = require "classes/components/movement/force"(m)
   local e = require "classes/core/newentity"
   
-  testItRequiresPosition(m, e(), p)
-  testItCanBeRemoved(m, e(), p)
-  testItCanBeAssignedForce(m, e(), p)
-  testItBlocksRemovingPosition(m, e(), p)
-  testItCanBeAssignedMultipleForces(m, e(), p)
-  testYouCanGetSumOfForce(m, e(), p)
-  testYouCanRemoveAForceByName(m, e(), p) 
-  testYouCanModifyAForceByName(m, e(), p)
+  local function makeEntity()
+    local ent = e()
+    p.add(ent)
+    return ent
+  end
+  
+  testItRequiresMotion(f, makeEntity(), m)
+  testItCanBeRemoved(f, makeEntity(), m)
+  testItCanBeAssignedForce(f, makeEntity(), m)
+  testItBlocksRemovingMotion(f, makeEntity(), m)
+  testItCanBeAssignedMultipleForces(f, makeEntity(), m)
+  testYouCanGetSumOfForce(f, makeEntity(), m)
+  testYouCanRemoveAForceByName(f, makeEntity(), m) 
+  testYouCanModifyAForceByName(f, makeEntity(), m)
 end

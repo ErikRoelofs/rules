@@ -1,8 +1,8 @@
 local componentName = "force"
-return function(position)
+return function(motion)
   return {  
     add = function (entity, forceName)
-      assert(position.has(entity) == true, "Force requires Position")
+      assert(motion.has(entity) == true, "Force requires Motion")
       local forces = {}
       if not entity:hasComponent(componentName) then
         entity:addComponent(componentName, {
@@ -10,7 +10,7 @@ return function(position)
               
             end,
             allowRemoveOtherComponent = function(self, name, component)
-              return not position.isA(name, component)
+              return not motion.isA(name, component)
             end,
             setForce = function(self, name, x, y)
               assert(forces[name], "Unknown force name: " .. name )
