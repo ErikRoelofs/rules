@@ -41,10 +41,12 @@ function verify()
   require "tests/core/inputhandler"()
   require "tests/components/rulestate"()
   require "tests/components/movement/position"()
+  require "tests/components/movement/motion"()
   require "tests/components/movement/force"()
   require "tests/components/carryable"()
   require "tests/components/inventory"()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
+  require "tests/system/motion"()
   
 end
