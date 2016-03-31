@@ -47,6 +47,6 @@ function verify()
   require "tests/components/inventory"()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
-  require "tests/system/motion"()
+  require "tests/system/motionSystem"()
   
 end

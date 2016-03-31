@@ -9,7 +9,7 @@ local function testItActsOnlyOnEntitiesWithMotion(motion, eFac)
 end
 
 return function()
-  local m = require "classes/system/motion"()
+  local m = require "classes/system/motionSystem"()
   local e = require "classes/core/newentity"
   
   testItActsOnlyOnEntitiesWithMotion(m, e)
