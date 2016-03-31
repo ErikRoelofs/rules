@@ -1,9 +1,9 @@
-local componentName = "motion"
+local componentName = "force"
 return function(position)
   return {  
-    add = function (entity, motionName)
+    add = function (entity, forceName)
       assert(position.has(entity) == true, "Motion requires Position")
-      local motions = {}
+      local forces = {}
       if not entity:hasComponent(componentName) then
         entity:addComponent(componentName, {
             remove = function()
@@ -13,30 +13,30 @@ return function(position)
               return not position.isA(name, component)
             end,
             setMotion = function(self, name, x, y)
-              assert(motions[name], "Unknown motion name: " .. name )
-              motions[name].x = x
-              motions[name].y = y
+              assert(forces[name], "Unknown force name: " .. name )
+              forces[name].x = x
+              forces[name].y = y
             end,
             getMotion = function(self, name)
-              assert(motions[name], "Unknown motion name: " .. name )
-              return motions[name].x, motions[name].y
+              assert(forces[name], "Unknown force name: " .. name )
+              return forces[name].x, forces[name].y
             end,            
             addMotion = function(self, name)
-              assert(not motions[name], "Already registered motion by name of " .. name)
-              motions[name] = { x = 0, y = 0 }
+              assert(not forces[name], "Already registered force by name of " .. name)
+              forces[name] = { x = 0, y = 0 }
             end,
             getSumMotion = function(self)
               local x = 0
               local y = 0
-              for k, motion in pairs(motions) do
-                x = x + motion.x
-                y = y + motion.y
+              for k, force in pairs(forces) do
+                x = x + force.x
+                y = y + force.y
               end
               return x, y
             end,
             removeByName = function(self, name)
-              assert(motions[name], "Cannot remove " .. name .. ", it is not a motion type")
-              motions[name] = nil
+              assert(forces[name], "Cannot remove " .. name .. ", it is not a force type")
+              forces[name] = nil
             end,
             update = function(self, dt)
               local x, y = self:getSumMotion()
@@ -44,7 +44,7 @@ return function(position)
             end
         })
       end
-      entity:component(componentName):addMotion(motionName)
+      entity:component(componentName):addMotion(forceName)
     end,
     remove = function (entity)      
       entity:removeComponent(componentName)
