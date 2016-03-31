@@ -17,7 +17,11 @@ return function(position)
           end,
           getMotion = function(self)
             return motion.x, motion.y
-          end,            
+          end,       
+          addMotion = function(self, x, y)
+            motion.x = motion.x + x
+            motion.y = motion.y + y
+          end
       })
     end,
     remove = function (entity)      

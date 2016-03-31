@@ -26,6 +26,16 @@ local function testItCanBeAssignedMotion(motion, entity, position)
   assert(y == 10, "Y should be 10")
 end
 
+local function testItCanBeModified(motion, entity, position)
+  position.add(entity)
+  motion.add(entity)
+  motion.get(entity):setMotion(5,10)
+  motion.get(entity):addMotion(3,4)
+  local x, y = motion.get(entity):getMotion()
+  assert(x == 8, "X should be 8")
+  assert(y == 14, "Y should be 14") 
+end
+
 return function()
   local p = require "classes/components/movement/position"()
   local m = require "classes/components/movement/motion"(p)

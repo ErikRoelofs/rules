@@ -59,6 +59,18 @@ local function testYouCanRemoveAForceByName(force, entity, position)
   assert(pcall(function() force.get(entity):getForce("someForce") end) == false, "Should no longer be able to get this")
 end
 
+local function testYouCanModifyAForceByName(force, entity, position)
+  position.add(entity)
+  force.add(entity, "someForce")
+  force.add(entity, "someOtherForce")
+  force.get(entity):setForce("someForce", 6, 9)
+  force.get(entity):updateForce("someForce", 3, 4)
+  local x, y = force.get(entity):getForce("someForce")
+  assert(x == 9, "X should be 9")
+  assert(y == 13, "Y should be 13")
+
+end
+
 return function()
   local p = require "classes/components/movement/position"()
   local m = require "classes/components/movement/force"(p)
@@ -70,5 +82,6 @@ return function()
   testItBlocksRemovingPosition(m, e(), p)
   testItCanBeAssignedMultipleForces(m, e(), p)
   testYouCanGetSumOfForce(m, e(), p)
-  testYouCanRemoveAForceByName(m, e(), p)  
+  testYouCanRemoveAForceByName(m, e(), p) 
+  testYouCanModifyAForceByName(m, e(), p)
 end

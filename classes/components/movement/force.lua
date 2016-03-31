@@ -37,6 +37,11 @@ return function(position)
             removeByName = function(self, name)
               assert(forces[name], "Cannot remove " .. name .. ", it is not a force type")
               forces[name] = nil
+            end,
+            updateForce = function(self, name, x, y)
+              assert(forces[name], "Unknown force name: " .. name )
+              forces[name].x = forces[name].x + x
+              forces[name].y = forces[name].y + y
             end
         })
       end
