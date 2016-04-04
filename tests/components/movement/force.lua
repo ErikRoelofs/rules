@@ -72,7 +72,7 @@ local function testYouCanModifyAForceByName(force, entity, motion)
 end
 
 return function()
-  local p = require "classes/components/movement/position"()  
+  local p = require "classes/components/collision/position"()  
   local m = require "classes/components/movement/motion"(p)  
   local f = require "classes/components/movement/force"(m)
   local e = require "classes/core/newentity"

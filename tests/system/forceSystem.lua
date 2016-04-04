@@ -37,7 +37,7 @@ end
 
 
 return function()
-  local position = require "classes/components/movement/position"()
+  local position = require "classes/components/collision/position"()
   local motion = require "classes/components/movement/motion"(position)
   local force = require "classes/components/movement/force"(motion)
   

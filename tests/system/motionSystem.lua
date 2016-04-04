@@ -34,7 +34,7 @@ local function testItMovesBasedOnDT(motionS, eFac, motion, position)
 end
 
 return function()
-  local position = require "classes/components/movement/position"()
+  local position = require "classes/components/collision/position"()
   local motion = require "classes/components/movement/motion"(position)
   
   local m = require "classes/system/motionSystem"(motion, position)

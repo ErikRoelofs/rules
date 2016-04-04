@@ -37,7 +37,7 @@ local function testItCanBeModified(motion, entity, position)
 end
 
 return function()
-  local p = require "classes/components/movement/position"()
+  local p = require "classes/components/collision/position"()
   local m = require "classes/components/movement/motion"(p)
   local e = require "classes/core/newentity"
   
