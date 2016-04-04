@@ -15,6 +15,8 @@ otherBlockTrigger = require "classes/components/triggers/otherblock"
 
 inputHandler = require "classes/core/inputhandler"()
 
+HC = require "libraries/hc"
+
 function love.load()
   if arg[#arg] == "-debug" then debug = true else debug = false end
   if debug then require("mobdebug").start() end
