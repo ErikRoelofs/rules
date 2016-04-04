@@ -36,8 +36,7 @@ end
 
 
 return function()
-  local hc = require "libraries/hc"
-  local s = require "classes/components/collision/shape"(hc)
+  local s = require "classes/components/collision/shape"()
   local e = require "classes/core/newentity"
     
   testItCanBeRemoved(s, e())
