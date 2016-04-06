@@ -1,8 +1,21 @@
 function testWhenItBecomesActiveItSetsTheGivenForce(activeForce, entityFac, position, motion, force, rulestate)
   local entity = entityFac()
+  activeForce.add(entity, {x = 50, y = 20})
+  rulestate.get(entity):setActive()
+  local forceX, forceY = force.get(entity):getSumForce()
+  assert(forceX == 50, "Force X component should be 50")
+  assert(forceY == 20, "Force Y component should be 20")
+  
 end
 
 function testWhenItBecomesInactiveItRemovesTheGivenForce(activeForce, entityFac, position, motion, force, rulestate)
+  local entity = entityFac()
+  activeForce.add(entity, {x = 50, y = 20})
+  rulestate.get(entity):setActive()
+  rulestate.get(entity):setInactive()
+  local forceX, forceY = force.get(entity):getSumForce()
+  assert(forceX == 0, "Force X component should be 0")
+  assert(forceY == 0, "Force Y component should be 0")
   
 end
 

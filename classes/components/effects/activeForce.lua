@@ -3,10 +3,11 @@
   local name = "activeForce-" .. math.random()
   return {
     add = function (entity, forceStrength)
-      assert(rulestate.has(entity) == false, "Only entities with RuleState can have active force")
-      assert(force.has(entity) == false, "Only entities with Force can have active force")
+      assert(rulestate.has(entity) == true, "Only entities with RuleState can have active force")
+      assert(force.has(entity) == true, "Only entities with Force can have active force")
       force.get(entity):addForce(name)
-      entity:addComponent(componentName, {
+      
+      local component = {
         remove = function(self)
           force.get(entity):removeByName(name)
         end,
@@ -19,7 +20,10 @@
         allowRemoveOtherComponent = function(self, name, component)
           return not rulestate.isA(name, component) and not force.isA(name, component)
         end
-      })      
+      }
+      
+      rulestate.get(entity):addEffect(name, component)
+      entity:addComponent(componentName, component)
     end,
 
     remove = function (entity)

@@ -29,6 +29,9 @@ return function(motion)
               local x = 0
               local y = 0
               for k, force in pairs(forces) do
+                if force.x == nil then
+                  stop = true
+                end
                 x = x + force.x
                 y = y + force.y
               end
