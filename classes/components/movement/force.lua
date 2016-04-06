@@ -45,7 +45,9 @@ return function(motion)
             end
         })
       end
-      entity:component(componentName):addForce(forceName)
+      if forceName then
+        entity:component(componentName):addForce(forceName)
+      end
     end,
     remove = function (entity)      
       entity:removeComponent(componentName)

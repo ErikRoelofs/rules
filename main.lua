@@ -4,6 +4,13 @@
 -- rendering
 -- inventory
 -- states? (life, death, etc)
+-- motion drag
+-- gravity
+-- event system
+-- proper testing framework
+-- inheritance for components
+-- level designer
+-- active force
 
 makeEntity = require "classes/core/newentity"
 
@@ -51,6 +58,7 @@ function verify()
   require "tests/components/inventory"()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
+  require "tests/components/effects/activeForce"()
   require "tests/system/motionSystem"()
   require "tests/system/forceSystem"()
   
