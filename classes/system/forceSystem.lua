@@ -4,7 +4,7 @@ return function(force, motion)
       for _, entity in ipairs(entities) do
         if force.has(entity) then
           local x, y = force.get(entity):getSumForce()
-          motion.get(entity):addMotion(x, y)
+          motion.get(entity):addMotion(x * dt, y *dt)
         end
       end
     end

@@ -20,7 +20,10 @@ return function(motion)
             getForce = function(self, name)
               assert(forces[name], "Unknown force name: " .. name )
               return forces[name].x, forces[name].y
-            end,            
+            end,
+            hasForce = function(self, name)
+              return forces[name] ~= nil
+            end,
             addForce = function(self, name)
               assert(not forces[name], "Already registered force by name of " .. name)
               forces[name] = { x = 0, y = 0 }

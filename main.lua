@@ -31,6 +31,7 @@ HC = require "libraries/hc"
 
 forceSystem = require "classes/system/forceSystem"(force, motion)
 motionSystem = require "classes/system/motionSystem"(motion, position)
+dragSystem = require "classes/system/dragSystem"(force, 30)
 
 function love.load()
   if arg[#arg] == "-debug" then debug = true else debug = false end
@@ -43,7 +44,7 @@ function love.load()
   position.add(entity)
   motion.add(entity)
   force.add(entity)
-  activeForce.add(entity, {x = 15, y = 10})
+  activeForce.add(entity, {x = 60, y = 40})
   keyTriggerCondition.add(entity, "q", inputHandler)
   
 end
@@ -57,6 +58,7 @@ function love.update(dt)
   
   motionSystem:update({entity}, dt)
   forceSystem:update({entity}, dt)
+  dragSystem:update({entity}, dt)
 end
 
 function love.draw()
@@ -66,6 +68,9 @@ function love.draw()
   love.graphics.setColor(255,255,255,255)
   local x, y = position.get(entity):getPosition()
   love.graphics.rectangle("fill", x,y,50,50)
+  
+  local fx, fy = force.get(entity):getSumForce()
+  love.graphics.print(fx .. ", " .. fy, 300, 20)
   
 end
 
@@ -89,5 +94,6 @@ function verify()
   require "tests/components/effects/activeForce"()
   require "tests/system/motionSystem"()
   require "tests/system/forceSystem"()
+  require "tests/system/dragSystem"()
   
 end

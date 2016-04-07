@@ -17,7 +17,7 @@ local function testItActsOnlyOnEntitiesWithForce(forceS, eFac, force, motion)
   
 end
 
-local function testItMovesBasedOnDT(motionS, eFac, motion, position)
+local function testItMovesBasedOnDT(forceS, eFac, force, motion)
   local e2 = eFac()  
   motion.add(e2)
   force.add(e2, "someForce")
@@ -51,5 +51,5 @@ return function()
   end
 
   testItActsOnlyOnEntitiesWithForce(system, eFac, force, motion)
-
+  testItMovesBasedOnDT(system, eFac, force, motion)
 end
