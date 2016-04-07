@@ -1,10 +1,9 @@
--- movement
 -- collision
 -- AI (movement, collision, etc)
 -- rendering
 -- inventory
 -- states? (life, death, etc)
--- motion drag
+-- motion drag (need to be a component itself)
 -- gravity
 -- event system
 -- proper testing framework
@@ -19,6 +18,7 @@ ruleState = require "classes/components/rulestate"()
 position = require "classes/components/collision/position"()
 motion = require "classes/components/movement/motion"(position)
 force = require "classes/components/movement/force"(motion)
+drag = require "classes/components/movement/drag"(force)
 activeForce = require "classes/components/effects/activeForce"(ruleState, force)
 
 
@@ -31,7 +31,7 @@ HC = require "libraries/hc"
 
 forceSystem = require "classes/system/forceSystem"(force, motion)
 motionSystem = require "classes/system/motionSystem"(motion, position)
-dragSystem = require "classes/system/dragSystem"(force, 30)
+dragSystem = require "classes/system/dragSystem"(drag, force)
 
 function love.load()
   if arg[#arg] == "-debug" then debug = true else debug = false end
@@ -44,6 +44,7 @@ function love.load()
   position.add(entity)
   motion.add(entity)
   force.add(entity)
+  drag.add(entity, 30)
   activeForce.add(entity, {x = 60, y = 40})
   keyTriggerCondition.add(entity, "q", inputHandler)
   
@@ -87,6 +88,7 @@ function verify()
   require "tests/components/collision/collision"()
   require "tests/components/movement/motion"()
   require "tests/components/movement/force"()
+  require "tests/components/movement/drag"()
   require "tests/components/carryable"()
   require "tests/components/inventory"()
   require "tests/components/triggers/key"()
