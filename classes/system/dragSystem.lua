@@ -1,18 +1,17 @@
-return function(drag, force)
+return function(drag, force, motion)
   return {
     update = function(self, entities, dt)
       for _, entity in ipairs(entities) do
         if drag.has(entity) then
           local fComp = force.get(entity)
-          local x, y = fComp:getSumForce()
+          local mComp = motion.get(entity)
+          local x, y = mComp:getMotion()
           local dragAmount = drag.get(entity):getDragAmount()
           if not fComp:hasForce("drag") then
             fComp:addForce("drag")
           end
-                    
-          fComp:updateForce("drag", -1 * math.min(dragAmount * dt, x) , 0)
-          fComp:updateForce("drag", 0, -1 * math.min(dragAmount * dt, y))
           
+          fComp:setForce("drag", -1 * x * dragAmount , -1 * y * dragAmount)          
         end
       end
     end

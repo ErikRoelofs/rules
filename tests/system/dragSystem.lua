@@ -1,12 +1,12 @@
-local function testItActsOnlyOnEntitiesWithDrag(dragS, eFac, force, drag)
+local function testItActsOnlyOnEntitiesWithDrag(dragS, eFac, force, drag, motion)
   local e1 = eFac()
   local e2 = eFac()  
   force.add(e1, "someForce")
-  force.get(e1):setForce("someForce", 10,8)
+  motion.get(e1):setMotion(10,8)
   
   force.add(e2, "someForce")
-  force.get(e2):setForce("someForce", 10,8)
-  drag.add(e2, 5)
+  motion.get(e2):setMotion(10,8)
+  drag.add(e2, 1)
     
   local entities = { e1, e2 }
   dragS:update(entities, 1)
@@ -14,43 +14,47 @@ local function testItActsOnlyOnEntitiesWithDrag(dragS, eFac, force, drag)
   assert( force.get(e1):hasForce("drag") == false, "Drag system should not work on this" )
   
   local x, y = force.get(e2):getForce("drag")
-  assert(x == -5, "Drag X should be -5")
-  assert(y == -5, "Drag Y should be -5")
+  assert(x == -10, "Drag X should be -10")
+  assert(y == -8, "Drag Y should be -8")
   
 end
 
-local function testItUpdatesBasedOnDt(dragS, eFac, force, drag)
+local function testItWorksOnNegativeMotion(dragS, eFac, force, drag, motion)
   local e1 = eFac()
   local e2 = eFac()  
   force.add(e2, "someForce")
-  force.get(e2):setForce("someForce", 10,8)
-  drag.add(e2, 5)
+  motion.get(e2):setMotion(-10,-8)
+  drag.add(e2, 1)
     
   local entities = { e1, e2 }
-  dragS:update(entities, 0.5)
+  dragS:update(entities, 1)
   
   local x, y = force.get(e2):getForce("drag")
-  assert(x == -2.5, "Drag X should be -2.5")
-  assert(y == -2.5, "Drag Y should be -2.5")
+  assert(x == 10, "Drag X should be 10")
+  assert(y == 8, "Drag Y should be 8")
 end
 
-local function testItCannotExceedPresentForce(dragS, eFac, force, drag)
+local function testItTakesDragAmountFromEntity(dragS, eFac, force, drag, motion)
   local e1 = eFac()
   local e2 = eFac()  
+  force.add(e1, "someForce")
+  motion.get(e1):setMotion(10,8)
+  
   force.add(e2, "someForce")
-  force.get(e2):setForce("someForce", 10,8)
-  drag.add(e2, 5)
+  motion.get(e2):setMotion(10,8)
+  drag.add(e1,0.5)
+  drag.add(e2, 1)
     
   local entities = { e1, e2 }
-  dragS:update(entities, 10)
+  dragS:update(entities, 1)
+  
+  local x, y = force.get(e1):getForce("drag")
+  assert(x == -5, "Drag X should be -5")
+  assert(y == -4, "Drag Y should be -4")
   
   local x, y = force.get(e2):getForce("drag")
   assert(x == -10, "Drag X should be -10")
   assert(y == -8, "Drag Y should be -8")
-end
-
-local function testItTakesDragAmountFromEntity()
-  assert(false, "To implement")
 end
 
 return function()
@@ -59,7 +63,7 @@ return function()
   local force = require "classes/components/movement/force"(motion)
   local drag = require "classes/components/movement/drag"(force)
   
-  local system = require "classes/system/dragSystem"(drag, force)
+  local system = require "classes/system/dragSystem"(drag, force, motion)
   local e = require "classes/core/newentity"
   
   local eFac = function()
@@ -69,8 +73,7 @@ return function()
     return ent
   end
 
-  testItActsOnlyOnEntitiesWithDrag(system, eFac, force, drag)
-  testItUpdatesBasedOnDt (system, eFac, force, drag)
-  testItCannotExceedPresentForce(system, eFac, force, drag)
-  testItTakesDragAmountFromEntity(system, eFac, force, drag)
+  testItActsOnlyOnEntitiesWithDrag(system, eFac, force, drag, motion)  
+  testItWorksOnNegativeMotion(system, eFac, force, drag, motion)
+  testItTakesDragAmountFromEntity(system, eFac, force, drag, motion)
 end

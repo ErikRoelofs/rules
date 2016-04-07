@@ -3,7 +3,6 @@
 -- rendering
 -- inventory
 -- states? (life, death, etc)
--- motion drag (need to be a component itself)
 -- gravity
 -- event system
 -- proper testing framework
@@ -31,7 +30,7 @@ HC = require "libraries/hc"
 
 forceSystem = require "classes/system/forceSystem"(force, motion)
 motionSystem = require "classes/system/motionSystem"(motion, position)
-dragSystem = require "classes/system/dragSystem"(drag, force)
+dragSystem = require "classes/system/dragSystem"(drag, force, motion)
 
 function love.load()
   if arg[#arg] == "-debug" then debug = true else debug = false end
@@ -44,7 +43,7 @@ function love.load()
   position.add(entity)
   motion.add(entity)
   force.add(entity)
-  drag.add(entity, 30)
+  drag.add(entity, 0.2)
   activeForce.add(entity, {x = 60, y = 40})
   keyTriggerCondition.add(entity, "q", inputHandler)
   
@@ -53,6 +52,8 @@ end
 function love.update(dt)
   if love.keyboard.isDown("q") then
     inputHandler:keyDown("q")
+  else
+    inputHandler:keyUp("q")
   end
   
   
@@ -71,7 +72,14 @@ function love.draw()
   love.graphics.rectangle("fill", x,y,50,50)
   
   local fx, fy = force.get(entity):getSumForce()
-  love.graphics.print(fx .. ", " .. fy, 300, 20)
+  love.graphics.print("force: " .. fx .. ", " .. fy, 300, 20)
+  
+  local mx, my = motion.get(entity):getMotion()
+  love.graphics.print("motion: " .. mx .. ", " .. my, 300, 40)
+
+  local px, py = position.get(entity):getPosition()
+  love.graphics.print("position: " .. px .. ", " .. py, 300, 60)
+
   
 end
 
