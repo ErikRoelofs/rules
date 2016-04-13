@@ -13,6 +13,7 @@
       local component = {
         remove = function(self)
           force.get(entity):removeByName(name)
+          switchboard.get(entity):removeEffect(switch, name)          
         end,
         becomesActive = function()
           force.get(entity):setForce(name, forceStrength.x, forceStrength.y)

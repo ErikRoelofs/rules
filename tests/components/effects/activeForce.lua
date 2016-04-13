@@ -16,7 +16,6 @@ function testWhenItBecomesInactiveItRemovesTheGivenForce(activeForce, entityFac,
   local forceX, forceY = force.get(entity):getSumForce()
   assert(forceX == 0, "Force X component should be 0")
   assert(forceY == 0, "Force Y component should be 0")
-  
 end
 
 return function()  

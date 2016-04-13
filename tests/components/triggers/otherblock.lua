@@ -1,67 +1,67 @@
-local function testItCanOnlyAttachToEntitiesWithRulestate(otherblock, toTrigger, thatTriggers, rulestate)
-  assert( false == pcall( function() otherblock.add(toTrigger, thatTriggers) end ), "Should not be possible to add a otherblock to an entity without rulestate" )
-  rulestate.add(toTrigger)
-  assert( false == pcall( function() otherblock.add(toTrigger, thatTriggers) end ), "Should not be possible to add a otherblock to an entity without rulestate" )
+local function testItCanOnlyAttachToEntitiesWithswitchboard(otherblock, toTrigger, thatTriggers, switchboard)
+  assert( false == pcall( function() otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch") end ), "Should not be possible to add a otherblock to an entity without switchboard" )
+  switchboard.add(toTrigger)
+  assert( false == pcall( function() otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch") end ), "Should not be possible to add a otherblock to an entity without switchboard" )
 end
 
-local function testItBlocksRemovingRulestateFromThatTriggers(otherblock, toTrigger, thatTriggers, rulestate)
-  rulestate.add(toTrigger)
-  rulestate.add(thatTriggers)
-  otherblock.add(toTrigger, thatTriggers)
+local function testItBlocksRemovingswitchboardFromThatTriggers(otherblock, toTrigger, thatTriggers, switchboard)
+  switchboard.add(toTrigger)
+  switchboard.add(thatTriggers)
+  otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch")
   
-  assert( false == pcall( function() rulestate.remove(thatTriggers) end ), "Should not be possible to remove rulestate if you have otherBlock" )
+  assert( false == pcall( function() switchboard.remove(thatTriggers) end ), "Should not be possible to remove switchboard if you have otherBlock" )
 end
 
-local function testItBlocksRemovingRulestateFromToTrigger(otherblock, toTrigger, thatTriggers, rulestate)
-  rulestate.add(toTrigger)
-  rulestate.add(thatTriggers)
-  otherblock.add(toTrigger, thatTriggers)
+local function testItBlocksRemovingswitchboardFromToTrigger(otherblock, toTrigger, thatTriggers, switchboard)
+  switchboard.add(toTrigger)
+  switchboard.add(thatTriggers)
+  otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch")
   
-  assert( false == pcall( function() rulestate.remove(toTrigger) end ), "Should not be possible to remove rulestate if you have otherBlock" )
+  assert( false == pcall( function() switchboard.remove(toTrigger) end ), "Should not be possible to remove switchboard if you have otherBlock" )
 end
 
-local function testItSetsOtherBlockToActive(otherblock, toTrigger, thatTriggers, rulestate)
-  rulestate.add(toTrigger)
-  rulestate.add(thatTriggers)
-  otherblock.add(toTrigger, thatTriggers)
+local function testItSetsOtherBlockToActive(otherblock, toTrigger, thatTriggers, switchboard)
+  switchboard.add(toTrigger)
+  switchboard.add(thatTriggers)
+  otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch")
   
-  thatTriggers:component("ruleState"):setActive()
-  assert(toTrigger:component("ruleState"):isActive() == true, "It should be active as well")
-  
-end
-
-local function testItSetsOtherBlockToInactive(otherblock, toTrigger, thatTriggers, rulestate)
-  rulestate.add(toTrigger)
-  rulestate.add(thatTriggers)
-  otherblock.add(toTrigger, thatTriggers)
-  
-  thatTriggers:component("ruleState"):setActive()
-  assert(toTrigger:component("ruleState"):isActive() == true, "It should be active as well")
-  thatTriggers:component("ruleState"):setInactive()
-  assert(toTrigger:component("ruleState"):isActive() == false, "It should be inactive as well")
+  thatTriggers:component("switchboard"):setActive("listenSwitch")
+  assert(toTrigger:component("switchboard"):isActive("targetSwitch") == true, "It should be active as well")
   
 end
 
-local function testItCleansUpProperly(otherblock, toTrigger, thatTriggers, rulestate)
-  rulestate.add(toTrigger)
-  rulestate.add(thatTriggers)
-  otherblock.add(toTrigger, thatTriggers)
+local function testItSetsOtherBlockToInactive(otherblock, toTrigger, thatTriggers, switchboard)
+  switchboard.add(toTrigger)
+  switchboard.add(thatTriggers)
+  otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch")
+  
+  thatTriggers:component("switchboard"):setActive("listenSwitch")
+  assert(toTrigger:component("switchboard"):isActive("targetSwitch") == true, "It should be active as well")
+  thatTriggers:component("switchboard"):setInactive("listenSwitch")
+  assert(toTrigger:component("switchboard"):isActive("targetSwitch") == false, "It should be inactive as well")
+  
+end
+
+local function testItCleansUpProperly(otherblock, toTrigger, thatTriggers, switchboard)
+  switchboard.add(toTrigger)
+  switchboard.add(thatTriggers)
+  otherblock.add(thatTriggers, "listenSwitch", toTrigger, "targetSwitch")
 
   otherblock.remove(toTrigger, thatTriggers)
   
-  rulestate.remove(toTrigger)
-  rulestate.remove(thatTriggers)
+  switchboard.remove(toTrigger)
+  switchboard.remove(thatTriggers)
 
 end
 
 return function()
-  local r = require "classes/components/rulestate"()
+  local r = require "classes/components/switchboard"()
   local e = require "classes/core/newentity"
   local o = require "classes/components/triggers/otherblock"(r)
   
-  testItCanOnlyAttachToEntitiesWithRulestate(o, e(), e(), r)
-  testItBlocksRemovingRulestateFromThatTriggers(o, e(), e(), r)
-  testItBlocksRemovingRulestateFromToTrigger(o, e(), e(), r)
+  testItCanOnlyAttachToEntitiesWithswitchboard(o, e(), e(), r)
+  testItBlocksRemovingswitchboardFromThatTriggers(o, e(), e(), r)
+  testItBlocksRemovingswitchboardFromToTrigger(o, e(), e(), r)
   testItSetsOtherBlockToActive(o, e(), e(), r)
   testItSetsOtherBlockToInactive(o, e(), e(), r)
   testItCleansUpProperly(o, e(), e(), r)
