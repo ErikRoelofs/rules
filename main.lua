@@ -10,6 +10,8 @@
 -- level designer
 -- active force
 -- rulestate does not work.
+-- dependency injection
+-- quick add
 
 makeEntity = require "classes/core/newentity"
 
@@ -91,6 +93,7 @@ function verify()
   require "tests/core/newentity"()
   require "tests/core/inputhandler"()
   require "tests/components/rulestate"()
+  require "tests/components/switchboard"()
   require "tests/components/collision/position"()
   require "tests/components/collision/shape"()
   require "tests/components/collision/collision"()
