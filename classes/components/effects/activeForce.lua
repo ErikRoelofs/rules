@@ -1,11 +1,14 @@
  local componentName = "activeForce"
- return function(rulestate, force) 
+ return function(switchboard, force) 
   local name = "activeForce-" .. math.random()
   return {
-    add = function (entity, forceStrength)
-      assert(rulestate.has(entity) == true, "Only entities with RuleState can have active force")
+    add = function (entity, switch, forceStrength)      
+      assert(switchboard.has(entity) == true, "Only entities with switchboard can have active force")
       assert(force.has(entity) == true, "Only entities with Force can have active force")
       force.get(entity):addForce(name)
+      if not switchboard.get(entity):hasSwitch(switch) then
+        switchboard.get(entity):registerSwitch(switch)
+      end
       
       local component = {
         remove = function(self)
@@ -18,11 +21,11 @@
           force.get(entity):setForce(name, 0, 0)
         end,        
         allowRemoveOtherComponent = function(self, name, component)
-          return not rulestate.isA(name, component) and not force.isA(name, component)
+          return not switchboard.isA(name, component) and not force.isA(name, component)
         end
       }
       
-      rulestate.get(entity):addEffect(name, component)
+      switchboard.get(entity):addEffect(switch, name, component)
       entity:addComponent(componentName, component)
     end,
 

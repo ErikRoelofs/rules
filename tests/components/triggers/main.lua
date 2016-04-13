@@ -15,15 +15,15 @@
 
 makeEntity = require "classes/core/newentity"
 
-ruleState = require "classes/components/rulestate"()
+switchboard = require "classes/components/switchboard"()
 position = require "classes/components/collision/position"()
 motion = require "classes/components/movement/motion"(position)
 force = require "classes/components/movement/force"(motion)
 drag = require "classes/components/movement/drag"(force)
-activeForce = require "classes/components/effects/activeForce"(ruleState, force)
+activeForce = require "classes/components/effects/activeForce"(switchboard, force)
 
 
-keyTriggerCondition = require "classes/components/triggers/key"(ruleState)
+keyTriggerCondition = require "classes/components/triggers/key"(switchboard)
 otherBlockTrigger = require "classes/components/triggers/otherblock"()
 
 inputHandler = require "classes/core/inputhandler"()
@@ -39,7 +39,7 @@ function love.load()
   if debug then require("mobdebug").start() end
 
   verify()
-  
+  --[[
   entity = makeEntity()
   ruleState.add(entity)
   position.add(entity)
@@ -48,7 +48,7 @@ function love.load()
   drag.add(entity, 0.2)
   activeForce.add(entity, {x = 60, y = 40})
   keyTriggerCondition.add(entity, "q", inputHandler)
-  
+  ]]--
 end
 
 function love.update(dt)
@@ -68,7 +68,7 @@ end
 function love.draw()
   love.graphics.setColor(0,255,0,255)
   love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
-  
+  --[[
   love.graphics.setColor(255,255,255,255)
   local x, y = position.get(entity):getPosition()
   love.graphics.rectangle("fill", x,y,50,50)
@@ -81,7 +81,7 @@ function love.draw()
 
   local px, py = position.get(entity):getPosition()
   love.graphics.print("position: " .. px .. ", " .. py, 300, 60)
-
+]]--
   
 end
 
