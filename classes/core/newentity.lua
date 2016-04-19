@@ -7,7 +7,7 @@ return function()
       return self.components[name]
     end,
     addComponent = function(self, name, component)
-      assert(self.components[name] == nil, "An component with this name is already registered." )
+      assert(self.components[name] == nil, "A component with the name " .. name .. " is already registered." )
       self.components[name] = component
     end,
     removeComponent = function(self, name)

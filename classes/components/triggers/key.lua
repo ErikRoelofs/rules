@@ -1,3 +1,4 @@
+ local componentName = "triggerKey"
  return function(switchboard) 
   return {
     add = function (entity, switch, trigger, inputHandler)
@@ -10,25 +11,40 @@
       local key = trigger
       local targetComponent = entity
       local name = "trigger_" .. math.random()
-      entity:addComponent("triggerKey", {
-        getTriggerKey = function(self)
-          return key
-        end,
-        resolve = function(self, event)
-          if event == "keydown" then
-            switchboard.get(targetComponent):setActive(switch)
-          elseif event == "keyup" then
-            switchboard.get(targetComponent):setInactive(switch)
+      if not entity:hasComponent(componentName) then        
+        entity:addComponent(componentName, {
+          map = {},
+          getTriggerKey = function(self)
+            return key
+          end,
+          addTrigger = function(self, key, switch)
+            table.insert(self.map, { key = key, switch = switch, name = name })
+            inputHandler:addTriggerForKey(key, name, entity:component(componentName))
+          end,
+          resolve = function(self, event, key)            
+            for _, map in ipairs(self.map) do
+              if map.key == key then
+                if event == "keydown" then
+                  switchboard.get(targetComponent):setActive(map.switch)
+                elseif event == "keyup" then
+                  switchboard.get(targetComponent):setInactive(map.switch)
+                end                
+              end
+            end
+          end,
+          remove = function(self)
+            for _, map in ipairs(self.map) do
+              inputHandler:removeTriggerForKey(map.key, map.name)  
+            end          
+          end,
+          allowRemoveOtherComponent = function(self, name, component)
+            return not switchboard.isA(name, component)
           end
-        end,
-        remove = function(self)
-          inputHandler:removeTriggerForKey(key, name)
-        end,
-        allowRemoveOtherComponent = function(self, name, component)
-          return not switchboard.isA(name, component)
-        end
-      })
-      inputHandler:addTriggerForKey(key, name, entity:component("triggerKey"))
+        })
+      end
+      
+      entity:component(componentName):addTrigger(key, switch)
+      
     end,
 
     remove = function (entity)

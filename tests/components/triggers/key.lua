@@ -34,11 +34,28 @@ local function testOnKeyUpItWillSetComponentToInactive(keytrigger, entity, switc
   
 end
 
-local function testOnRemoveItWillUnregisterKeyTrigger(keytrigger, entity, switchboard, inputHandler)
+local function testItAcceptsMultipleKeyTriggers(keytrigger, entity, switchboard, inputHandler)
   switchboard.add(entity)
   keytrigger.add(entity, "someSwitch", "q", inputHandler)
+  keytrigger.add(entity, "someOtherSwitch", "w", inputHandler)
+  
+  inputHandler:keyDown("q")
+  assert(entity:component("switchboard"):isActive("someSwitch") == true, "Component should be active now")
+  assert(entity:component("switchboard"):isActive("someOtherSwitch") == false, "Component should be inactive now")
+  
+  inputHandler:keyDown("w")
+  assert(entity:component("switchboard"):isActive("someOtherSwitch") == true, "Component should be active now")
+  
+end
+
+local function testOnRemoveItWillUnregisterKeyTriggers(keytrigger, entity, switchboard, inputHandler)
+  switchboard.add(entity)
+  keytrigger.add(entity, "someSwitch", "q", inputHandler)
+  keytrigger.add(entity, "someOtherSwitch", "w", inputHandler)
   keytrigger.remove(entity)
   assert(inputHandler:getNumTriggersForKey("q") == 0, "Should have no triggers now")
+  assert(inputHandler:getNumTriggersForKey("w") == 0, "Should have no triggers now")
+  
 end
 
 return function()
@@ -52,5 +69,6 @@ return function()
   testItAddsATriggerToInputHandler(k, e(), r, i())
   testOnKeyDownItWillSetComponentToActive(k, e(), r, i())
   testOnKeyUpItWillSetComponentToInactive(k, e(), r, i())
-  testOnRemoveItWillUnregisterKeyTrigger(k, e(), r, i())
+  testOnRemoveItWillUnregisterKeyTriggers(k, e(), r, i())
+  testItAcceptsMultipleKeyTriggers(k, e(), r, i())
 end

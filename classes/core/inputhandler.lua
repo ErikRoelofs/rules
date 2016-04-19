@@ -3,12 +3,12 @@ return function()
     triggers = {},
     keyDown = function(self, key)
       for k, trigger in pairs(self:getTriggersForKey(key)) do
-         trigger:resolve("keydown")
+         trigger:resolve("keydown", key)
       end
     end,
     keyUp = function(self, key)
       for k, trigger in pairs(self:getTriggersForKey(key)) do
-         trigger:resolve("keyup")
+         trigger:resolve("keyup", key)
       end
     end,
     addTriggerForKey = function(self, key, name, trigger)

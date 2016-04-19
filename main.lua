@@ -9,9 +9,13 @@
 -- inheritance for components
 -- level designer
 -- active force
--- rulestate does not work.
 -- dependency injection
 -- quick add
+-- brakes
+
+-- need to refactor: each component must work properly when added only once
+-- keytrigger (and inputhandler) need to work with a set of key->switch
+-- activeforce (and switchboard) need to work with a set of switch->force
 
 makeEntity = require "classes/core/newentity"
 
@@ -39,16 +43,23 @@ function love.load()
   if debug then require("mobdebug").start() end
 
   verify()
-  --[[
+  
   entity = makeEntity()
-  ruleState.add(entity)
+  switchboard.add(entity)
   position.add(entity)
   motion.add(entity)
   force.add(entity)
-  drag.add(entity, 0.2)
-  activeForce.add(entity, {x = 60, y = 40})
-  keyTriggerCondition.add(entity, "q", inputHandler)
-  ]]--
+  drag.add(entity, 0.8)
+  activeForce.add(entity, "move-left", {x = 60, y = 40})
+  keyTriggerCondition.add(entity, "move-left", "q", inputHandler)
+  
+  otherEntity = makeEntity()
+  switchboard.add(otherEntity)
+  keyTriggerCondition.add(otherEntity, "move-right", "w", inputHandler)
+  
+  --activeForce.add(entity, "move-back", {x = -60, y = -40})
+  --keyTriggerCondition.add(entity, "move-back", "w", inputHandler)
+
 end
 
 function love.update(dt)
@@ -68,7 +79,7 @@ end
 function love.draw()
   love.graphics.setColor(0,255,0,255)
   love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
-  --[[
+  
   love.graphics.setColor(255,255,255,255)
   local x, y = position.get(entity):getPosition()
   love.graphics.rectangle("fill", x,y,50,50)
@@ -81,7 +92,6 @@ function love.draw()
 
   local px, py = position.get(entity):getPosition()
   love.graphics.print("position: " .. px .. ", " .. py, 300, 60)
-]]--
   
 end
 
@@ -91,8 +101,7 @@ end
 
 function verify()
   require "tests/core/newentity"()
-  require "tests/core/inputhandler"()
-  require "tests/components/rulestate"()
+  require "tests/core/inputhandler"()  
   require "tests/components/switchboard"()
   require "tests/components/collision/position"()
   require "tests/components/collision/shape"()
