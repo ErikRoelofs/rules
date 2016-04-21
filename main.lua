@@ -8,14 +8,10 @@
 -- proper testing framework
 -- inheritance for components
 -- level designer
--- active force
 -- dependency injection
 -- quick add
 -- brakes
-
--- need to refactor: each component must work properly when added only once
--- keytrigger (and inputhandler) need to work with a set of key->switch
--- activeforce (and switchboard) need to work with a set of switch->force
+-- forces should use trigonometry
 
 makeEntity = require "classes/core/newentity"
 
@@ -25,6 +21,7 @@ motion = require "classes/components/movement/motion"(position)
 force = require "classes/components/movement/force"(motion)
 drag = require "classes/components/movement/drag"(force)
 activeForce = require "classes/components/effects/activeForce"(switchboard, force)
+activeDrag = require "classes/components/effects/activeDrag"(switchboard, drag)
 
 
 keyTriggerCondition = require "classes/components/triggers/key"(switchboard)
@@ -49,32 +46,36 @@ function love.load()
   position.add(entity)
   motion.add(entity)
   force.add(entity)
-  drag.add(entity, 0.8)
-  activeForce.add(entity, "move-left", {x = 60, y = 40})
+  drag.add(entity, 0.2)
+  
+  activeForce.add(entity, "move-left", {x = 120, y = 80})
   keyTriggerCondition.add(entity, "move-left", "q", inputHandler)
     
-  activeForce.add(entity, "move-back", {x = -60, y = -40})
+  activeForce.add(entity, "move-back", {x = -120, y = -80})
   keyTriggerCondition.add(entity, "move-back", "w", inputHandler)
+
+  activeDrag.add(entity, "brake", 4)
+  keyTriggerCondition.add(entity, "brake", "e", inputHandler)
 
 end
 
 function love.update(dt)
-  if love.keyboard.isDown("q") then
-    inputHandler:keyDown("q")
-  else
-    inputHandler:keyUp("q")
-  end
-  if love.keyboard.isDown("w") then
-    inputHandler:keyDown("w")
-  else
-    inputHandler:keyUp("w")
-  end
-  
-  
-  
   motionSystem:update({entity}, dt)
   forceSystem:update({entity}, dt)
   dragSystem:update({entity}, dt)
+end
+
+function love.keypressed(key, code, isRepeat)
+  print("press")
+  print(key)
+  print(code)
+  inputHandler:keyDown(key)
+end
+
+function love.keyreleased(key)
+  print("release")
+  print(key)
+  inputHandler:keyUp(key)
 end
 
 function love.draw()
@@ -96,10 +97,6 @@ function love.draw()
   
 end
 
-function love.keypressed(key, unicode)
-  
-end
-
 function verify()
   require "tests/core/newentity"()
   require "tests/core/inputhandler"()  
@@ -115,6 +112,7 @@ function verify()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
   require "tests/components/effects/activeForce"()
+  require "tests/components/effects/activeDrag"()
   require "tests/system/motionSystem"()
   require "tests/system/forceSystem"()
   require "tests/system/dragSystem"()
