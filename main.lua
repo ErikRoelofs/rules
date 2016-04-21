@@ -52,13 +52,9 @@ function love.load()
   drag.add(entity, 0.8)
   activeForce.add(entity, "move-left", {x = 60, y = 40})
   keyTriggerCondition.add(entity, "move-left", "q", inputHandler)
-  
-  otherEntity = makeEntity()
-  switchboard.add(otherEntity)
-  keyTriggerCondition.add(otherEntity, "move-right", "w", inputHandler)
-  
-  --activeForce.add(entity, "move-back", {x = -60, y = -40})
-  --keyTriggerCondition.add(entity, "move-back", "w", inputHandler)
+    
+  activeForce.add(entity, "move-back", {x = -60, y = -40})
+  keyTriggerCondition.add(entity, "move-back", "w", inputHandler)
 
 end
 
@@ -67,6 +63,11 @@ function love.update(dt)
     inputHandler:keyDown("q")
   else
     inputHandler:keyUp("q")
+  end
+  if love.keyboard.isDown("w") then
+    inputHandler:keyDown("w")
+  else
+    inputHandler:keyUp("w")
   end
   
   
