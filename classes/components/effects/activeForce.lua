@@ -9,26 +9,42 @@
       if not switchboard.get(entity):hasSwitch(switch) then
         switchboard.get(entity):registerSwitch(switch)
       end
-      
-      local component = {
-        name = name,
-        remove = function(self)
-          force.get(entity):removeByName(self.name)
-          switchboard.get(entity):removeEffect(switch, self.name)          
-        end,
-        becomesActive = function(self)
-          force.get(entity):setForce(self.name, forceStrength.x, forceStrength.y)
-        end,
-        becomesInactive = function(self)
-          force.get(entity):setForce(self.name, 0, 0)
-        end,        
-        allowRemoveOtherComponent = function(self, name, component)
-          return not switchboard.isA(name, component) and not force.isA(name, component)
-        end
-      }
+      if not entity:hasComponent(componentName) then
+        local component = {
+          map = {},          
+          remove = function(self)
+            for _, map in ipairs(self.map) do
+              force.get(entity):removeByName(map.name)
+              switchboard.get(entity):removeEffect(map.switch, map.name)                        
+            end
+          end,
+          addForce = function(self, name, switch, forceStrength)
+            switchboard.get(entity):addEffect(switch, name, self)
+            table.insert(self.map, {switch = switch, name = name, forceStrength = forceStrength } )
+          end,
+          becomesActive = function(self, name)
+            for _, map in ipairs(self.map) do
+              if map.switch == name then
+                force.get(entity):setForce(map.name, map.forceStrength.x, map.forceStrength.y)  
+              end
+            end            
+          end,
+          becomesInactive = function(self, name)
+            for _, map in ipairs(self.map) do
+              if map.switch == name then
+                force.get(entity):setForce(map.name, 0, 0)  
+              end
+            end            
+          end,        
+          allowRemoveOtherComponent = function(self, name, component)
+            return not switchboard.isA(name, component) and not force.isA(name, component)
+          end
+        }
+        entity:addComponent(componentName, component)
+      end
       
       switchboard.get(entity):addEffect(switch, name, component)
-      entity:addComponent(componentName, component)
+      entity:component(componentName):addForce(name, switch, forceStrength)
     end,
 
     remove = function (entity)

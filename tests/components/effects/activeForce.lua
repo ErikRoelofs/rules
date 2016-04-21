@@ -8,7 +8,23 @@ function testWhenItBecomesActiveItSetsTheGivenForce(activeForce, entityFac, posi
   
 end
 
-function testWhenItBecomesInactiveItRemovesTheGivenForce(activeForce, entityFac, position, motion, force, switchboard)
+function testWhenItTakesMultipleForces(activeForce, entityFac, position, motion, force, switchboard)
+  local entity = entityFac()
+  activeForce.add(entity, "someSwitch", {x = 50, y = 20})
+  activeForce.add(entity, "someOtherSwitch", {x = 100, y = 150})
+  switchboard.get(entity):setActive("someSwitch")
+  local forceX, forceY = force.get(entity):getSumForce()
+  assert(forceX == 50, "Force X component should be 50")
+  assert(forceY == 20, "Force Y component should be 20")
+  switchboard.get(entity):setActive("someOtherSwitch")
+  local forceX, forceY = force.get(entity):getSumForce()
+  assert(forceX == 150, "Force X component should be 150")
+  assert(forceY == 170, "Force Y component should be 170")
+  
+end
+
+
+function testWhenItBecomesInactiveItRemovesTheGivenForces(activeForce, entityFac, position, motion, force, switchboard)
   local entity = entityFac()
   activeForce.add(entity, "someSwitch", {x = 50, y = 20})
   switchboard.get(entity):setActive("someSwitch")
@@ -17,6 +33,19 @@ function testWhenItBecomesInactiveItRemovesTheGivenForce(activeForce, entityFac,
   assert(forceX == 0, "Force X component should be 0")
   assert(forceY == 0, "Force Y component should be 0")
 end
+
+function testWhenItIsRemovedItClearsTheForces(activeForce, entityFac, position, motion, force, switchboard)
+  local entity = entityFac()
+  activeForce.add(entity, "someSwitch", {x = 50, y = 20})
+  activeForce.add(entity, "someOtherSwitch", {x = 20, y = 30})
+  switchboard.get(entity):setActive("someSwitch")
+  switchboard.get(entity):setActive("someOtherSwitch")
+  activeForce.remove(entity)
+  local forceX, forceY = force.get(entity):getSumForce()
+  assert(forceX == 0, "Force X component should be 0")
+  assert(forceY == 0, "Force Y component should be 0")
+end
+
 
 return function()  
   local p = require "classes/components/collision/position"()  
@@ -35,6 +64,7 @@ return function()
   end
 
   testWhenItBecomesActiveItSetsTheGivenForce(af, makeEntity, p, m, f, s)
-  testWhenItBecomesInactiveItRemovesTheGivenForce(af, makeEntity, p, m, f, s)
-
+  testWhenItBecomesInactiveItRemovesTheGivenForces(af, makeEntity, p, m, f, s)
+  testWhenItTakesMultipleForces(af, makeEntity, p, m, f, s)
+  testWhenItIsRemovedItClearsTheForces(af, makeEntity, p, m, f, s)
 end

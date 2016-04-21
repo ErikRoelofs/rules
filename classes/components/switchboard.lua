@@ -33,7 +33,7 @@ return function()
             if not self.switches[name] == true then
               self.switches[name] = true
               for effectName, effect in pairs(self:getEffects(name)) do
-                effect:becomesActive()
+                effect:becomesActive(name)
               end
             end
           end,        
@@ -42,7 +42,7 @@ return function()
             if not self.switches[name] == false then
               self.switches[name] = false
               for effectName, effect in pairs(self:getEffects(name)) do
-                effect:becomesInactive()
+                effect:becomesInactive(name)
               end
             end
           end,
