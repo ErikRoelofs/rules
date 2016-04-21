@@ -17,8 +17,12 @@ return function(position, shape, hc)
       end
       
       entity:addComponent(componentName, {
-          remove = function()
-            hc.remove(hcShape)
+          shape = hcShape,
+          getShape = function(self)
+            return self.shape
+          end,
+          remove = function(self)
+            hc.remove(self.shape)
           end,
           allowRemoveOtherComponent = function(self, name, component)
             return not position.isA(name, component) and not shape.isA(name, component)

@@ -56,6 +56,19 @@ local function testItUnregistersTheShapes(collision, shape, position, entity, hc
   hc._reset()
 end
 
+local function testItCanGetTheShape(collision, shape, position, entity, hc)
+  position.add(entity)
+  local toReturn = {derp="derp"}
+  shape.add(entity, shape.point())
+  hc.point = function()
+    return toReturn
+  end
+  collision.add(entity)
+  local theShape = collision.get(entity):getShape()
+  
+  assert(theShape == toReturn, "Should have gotten the same shape")
+  
+end
 
 return function()
   function hc()
@@ -95,4 +108,5 @@ return function()
   testItRegistersTheRectangle(c, s, p, e(), mockHc)
   testItRegistersThePoint(c, s, p, e(), mockHc)
   testItUnregistersTheShapes(c, s, p, e(), mockHc)
+  testItCanGetTheShape(c, s, p, e(), mockHc)
 end
