@@ -67,6 +67,8 @@ return function(motion)
     isA = function (name, component)
       return name == componentName
     end,
-
+    name = function()
+      return componentName
+    end
   }
 end
