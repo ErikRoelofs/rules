@@ -1,14 +1,25 @@
 return function()
-  return function(name)
+  return function(name, requirements)
     local componentName = name
+    local requires = requirements or {}
     return {  
       add = function (entity, value)      
+        for _, component in ipairs(requires) do
+          assert(component.has(entity), "The required component " .. component:name() .. " was not found")
+        end          
+
         entity:addComponent(componentName, {
+            
             value = value,
             remove = function()
               
             end,
             allowRemoveOtherComponent = function(self, name, component)
+              for _, requiredComponent in ipairs(requires) do
+                if requiredComponent.isA(name, component) then
+                  return false
+                end
+              end              
               return true
             end,
             setValue = function(self, value)
@@ -31,7 +42,9 @@ return function()
       isA = function (name, component)
         return name == componentName
       end,
-
+      name = function()
+        return componentName
+      end,
     }
   end
 end

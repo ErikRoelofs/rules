@@ -31,6 +31,29 @@ local function testEachComponentHasAValue(simpleFactory, entity)
   
 end
 
+local function testItAcceptsRequirements(simpleFactory, entity)
+  local cookie = simpleFactory("cookie")
+  cookie.add(entity)
+  
+  local cake = simpleFactory("cake", {cookie})
+  cake.add(entity)
+  
+  local icecream = simpleFactory("icecream")
+  local chocolate = simpleFactory("chocolate", {icecream})
+  
+  assert(pcall(function() chocolate.add(entity) end) == false, "It should not be possible to add this")
+end
+
+local function testARequiredComponentCannotBeRemoved(simpleFactory, entity)
+  local cookie = simpleFactory("cookie")
+  cookie.add(entity)
+  
+  local cake = simpleFactory("cake", {cookie})
+  cake.add(entity)
+
+  assert(pcall(function() cookie.remove(entity) end) == false, "It should not be possible to remove this")  
+end
+
 return function()
   local s = require "classes/components/simple"()
   local e = require "classes/core/newentity"
@@ -43,4 +66,6 @@ return function()
   testItReturnsAWorkingComponent(s, makeEnt())
   testMultipleComponentsDoNotInteract(s, makeEnt())
   testEachComponentHasAValue(s, makeEnt())
+  testItAcceptsRequirements(s, makeEnt())
+  testARequiredComponentCannotBeRemoved(s, makeEnt())
 end

@@ -12,6 +12,8 @@
 -- dependency injection
 -- quick add
 -- forces should use trigonometry
+-- use more factories for components
+    -- only need to define add function
 
 -- attacks
 -- keys/doors
