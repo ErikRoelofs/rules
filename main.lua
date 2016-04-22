@@ -86,15 +86,10 @@ function love.update(dt)
 end
 
 function love.keypressed(key, code, isRepeat)
-  print("press")
-  print(key)
-  print(code)
   inputHandler:keyDown(key)
 end
 
 function love.keyreleased(key)
-  print("release")
-  print(key)
   inputHandler:keyUp(key)
 end
 
@@ -132,6 +127,7 @@ function verify()
   require "tests/core/newentity"()
   require "tests/core/inputhandler"()  
   require "tests/components/switchboard"()
+  require "tests/components/simple"()
   require "tests/components/collision/position"()
   require "tests/components/collision/shape"()
   require "tests/components/collision/collision"()
