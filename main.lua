@@ -14,6 +14,8 @@
 -- forces should use trigonometry
 -- use more factories for components
     -- only need to define add function
+    -- needs refactoring it seems
+    -- component itself should also be factorized?
 
 -- attacks
 -- keys/doors
@@ -40,6 +42,7 @@ inputHandler = require "classes/core/inputhandler"()
 
 HC = require "libraries/hc"
 collision = require "classes/components/collision/collision"(position, shape, HC)
+collisionTrigger = require "classes/components/triggers/collision"(collision)
 
 forceSystem = require "classes/system/forceSystem"(force, motion)
 motionSystem = require "classes/system/motionSystem"(motion, position)
@@ -140,6 +143,7 @@ function verify()
   require "tests/components/inventory"()
   require "tests/components/triggers/key"()
   require "tests/components/triggers/otherblock"()
+  require "tests/components/triggers/collision"()
   require "tests/components/effects/activeForce"()
   require "tests/components/effects/activeDrag"()
   require "tests/system/motionSystem"()

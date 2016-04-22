@@ -6,7 +6,7 @@ return function()
       add = function (entity, value)      
         for _, component in ipairs(requires) do
           assert(component.has(entity), "The required component " .. component:name() .. " was not found")
-        end          
+        end
 
         entity:addComponent(componentName, {
             
