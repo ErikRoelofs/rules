@@ -48,6 +48,7 @@ forceSystem = require "classes/system/forceSystem"(force, motion)
 motionSystem = require "classes/system/motionSystem"(motion, position)
 dragSystem = require "classes/system/dragSystem"(drag, force, motion)
 collisionUpdateSystem = require "classes/system/collisionUpdateSystem"(position, collision)
+collisionHandleSystem = require "classes/system/collisionHandleSystem"(position, collision, HC)
 
 function love.load()
   if arg[#arg] == "-debug" then debug = true else debug = false end
@@ -87,6 +88,7 @@ function love.update(dt)
   forceSystem:update({entity}, dt)
   dragSystem:update({entity}, dt)
   collisionUpdateSystem:update({entity}, dt)
+  collisionHandleSystem:update({entity}, dt)
   
 end
 
