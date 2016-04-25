@@ -1,3 +1,6 @@
+  if arg[#arg] == "-debug" then debug = true else debug = false end
+  if debug then require("mobdebug").start() end
+
 -- collision
   -- gravity
   -- AI (movement, collision, etc)
@@ -49,10 +52,9 @@ motionSystem = require "classes/system/motionSystem"(motion, position)
 dragSystem = require "classes/system/dragSystem"(drag, force, motion)
 collisionUpdateSystem = require "classes/system/collisionUpdateSystem"(position, collision)
 collisionHandleSystem = require "classes/system/collisionHandleSystem"(position, collision, HC)
+collisionTriggerSystem = require "classes/system/collisionTriggerSystem"(collisionTrigger, HC)
 
 function love.load()
-  if arg[#arg] == "-debug" then debug = true else debug = false end
-  if debug then require("mobdebug").start() end
 
   verify()
   
@@ -89,6 +91,7 @@ function love.update(dt)
   dragSystem:update({entity}, dt)
   collisionUpdateSystem:update({entity}, dt)
   collisionHandleSystem:update({entity}, dt)
+  collisionTriggerSystem:update({entity}, dt)
   
 end
 
@@ -152,5 +155,6 @@ function verify()
   require "tests/system/forceSystem"()
   require "tests/system/dragSystem"()
   require "tests/system/collisionUpdateSystem"()
+  require "tests/system/collisionHandleSystem"()
   
 end

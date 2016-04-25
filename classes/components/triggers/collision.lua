@@ -1,4 +1,4 @@
- local componentName = "collision"
+ local componentName = "collisionTrigger"
  return function(switchboard) 
   return {
     add = function (entity, switch, checkComponents)
@@ -30,6 +30,11 @@
               end
             end
           end,
+          reset = function()
+            for _, map in ipairs(self.map) do
+              switchboard.get(self.target):setInactive(map.switch)
+            end
+          end,
           remove = function(self)
             for _, map in ipairs(self.map) do
               
@@ -50,6 +55,16 @@
     end,
     get = function(entity)
       return entity:component(componentName)
-    end
+    end,
+    has = function(entity)
+      return entity:hasComponent(componentName)
+    end,
+    isA = function (name, component)
+      return name == componentName
+    end,
+    name = function()
+      return componentName
+    end,
+
   }
 end
